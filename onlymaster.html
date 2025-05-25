@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OnlyFans</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000;
+            color: #fff;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .left-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        }
+
+        .right-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 40px;
+            background: #111;
+            display: none;
+        }
+
+        .logo {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #00aff0;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .tos-container {
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .tos-title {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            color: #00aff0;
+        }
+
+        .tos-content {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: left;
+            line-height: 1.6;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .tos-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .tos-content::-webkit-scrollbar-track {
+            background: #333;
+            border-radius: 4px;
+        }
+
+        .tos-content::-webkit-scrollbar-thumb {
+            background: #00aff0;
+            border-radius: 4px;
+        }
+
+        .tos-content h3 {
+            color: #00aff0;
+            margin-bottom: 15px;
+            margin-top: 20px;
+        }
+
+        .tos-content h3:first-child {
+            margin-top: 0;
+        }
+
+        .age-warning {
+            background: #ff4757;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .accept-btn {
+            background: linear-gradient(45deg, #00aff0, #0084c7);
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            font-size: 1.2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .accept-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 175, 240, 0.3);
+        }
+
+        .accept-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .info-section {
+            background: #1a1a1a;
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid #333;
+        }
+
+        .info-title {
+            color: #00aff0;
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .info-grid {
+            display: grid;
+            gap: 15px;
+        }
+
+        .info-item {
+            background: #000;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #333;
+        }
+
+        .info-label {
+            color: #ccc;
+            font-weight: 500;
+        }
+
+        .info-value {
+            color: #00aff0;
+            font-weight: bold;
+            word-break: break-all;
+        }
+
+        .loading {
+            text-align: center;
+            color: #00aff0;
+            font-size: 1.1rem;
+            margin: 20px 0;
+        }
+
+        .spinner {
+            border: 3px solid #333;
+            border-top: 3px solid #00aff0;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .left-section, .right-section {
+                flex: none;
+                height: 100vh;
+                padding: 20px;
+            }
+            
+            .logo {
+                font-size: 3rem;
+                margin-bottom: 30px;
+            }
+            
+            .tos-content {
+                max-height: 250px;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-section" id="tosSection">
+            <div class="logo">OnlyFans</div>
+            
+            <div class="tos-container">
+                <div class="age-warning">
+                    ⚠️ Nur für Netami
+                </div>
+                
+                <h2 class="tos-title">Nutzungsbedingungen</h2>
+                
+                <div class="tos-content">
+                    <h3>1. Akzeptanz der Bedingungen</h3>
+                    <p>Durch die Nutzung von OnlyFans stimmen Sie diesen Nutzungsbedingungen zu. Diese Plattform ist ausschließlich für Erwachsene ab 18 Jahren bestimmt.</p>
+                    
+                    <h3>2. Registrierung und Konto</h3>
+                    <p>Sie müssen ein Konto erstellen, um auf OnlyFans zugreifen zu können. Sie sind verantwortlich für die Sicherheit Ihres Kontos und Passworts.</p>
+                    
+                    <h3>3. Inhalte und Urheberrecht</h3>
+                    <p>Alle Inhalte auf OnlyFans sind urheberrechtlich geschützt. Das Herunterladen, Kopieren oder Weiterverbreiten von Inhalten ist strengstens untersagt.</p>
+                    
+                    <h3>4. Zahlungen und Abonnements</h3>
+                    <p>Alle Zahlungen sind endgültig. Abonnements verlängern sich automatisch, sofern nicht rechtzeitig gekündigt.</p>
+                    
+                    <h3>5. Verbotene Aktivitäten</h3>
+                    <p>Jegliche Form von Belästigung, Spam oder illegalen Aktivitäten führt zur sofortigen Sperrung des Kontos.</p>
+                    
+                    <h3>6. Datenschutz</h3>
+                    <p>Wir respektieren Ihre Privatsphäre und verwenden Ihre Daten gemäß unserer Datenschutzrichtlinie.</p>
+                    
+                    <h3>7. Haftungsausschluss</h3>
+                    <p>OnlyFans übernimmt keine Haftung für Schäden, die durch die Nutzung der Plattform entstehen könnten.</p>
+                </div>
+                
+                <button id="acceptBtn" class="accept-btn">Akzeptieren & Fortfahren</button>
+            </div>
+        </div>
+
+        <div class="right-section" id="infoSection">
+            <div class="info-section">
+                <div class="loading" id="loadingDiv">
+                    <div class="spinner"></div>
+                    Ihre Daten werden geladen...
+                </div>
+                
+                <h3 class="info-title" id="infoTitle" style="display: none;">🔒 Ihre Sicherheitsinformationen</h3>
+                <div class="info-grid" id="infoGrid" style="display: none;">
+                    <!-- Wird dynamisch gefüllt -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('acceptBtn').addEventListener('click', function() {
+            const button = this;
+            const tosSection = document.getElementById('tosSection');
+            const infoSection = document.getElementById('infoSection');
+            const loadingDiv = document.getElementById('loadingDiv');
+            const infoTitle = document.getElementById('infoTitle');
+            const infoGrid = document.getElementById('infoGrid');
+            
+            // Button deaktivieren
+            button.disabled = true;
+            button.textContent = 'Wird verarbeitet...';
+            
+            // Zur Info-Sektion wechseln
+            tosSection.style.display = 'none';
+            infoSection.style.display = 'flex';
+            
+            // IP und Location Services
+            const ipServices = [
+                'https://api.ipify.org?format=json',
+                'https://ipapi.co/json/',
+                'https://ipinfo.io/json'
+            ];
+            
+            async function getIPAndLocation() {
+                for (let service of ipServices) {
+                    try {
+                        const response = await fetch(service);
+                        const data = await response.json();
+                        
+                        let ip = data.ip || data.query;
+                        let locationData = {};
+                        
+                        if (service === 'https://ipapi.co/json/') {
+                            locationData = {
+                                country: data.country_name,
+                                city: data.city,
+                                region: data.region,
+                                lat: data.latitude,
+                                lon: data.longitude,
+                                timezone: data.timezone,
+                                isp: data.org
+                            };
+                        } else if (service === 'https://ipinfo.io/json') {
+                            locationData = {
+                                country: data.country,
+                                city: data.city,
+                                region: data.region,
+                                lat: data.loc ? data.loc.split(',')[0] : 'N/A',
+                                lon: data.loc ? data.loc.split(',')[1] : 'N/A',
+                                timezone: data.timezone,
+                                isp: data.org
+                            };
+                        } else {
+                            // Für ipify.org zusätzliche Location-Abfrage
+                            try {
+                                const locResponse = await fetch(`http://ip-api.com/json/${ip}`);
+                                const locData = await locResponse.json();
+                                if (locData.status === 'success') {
+                                    locationData = {
+                                        country: locData.country,
+                                        city: locData.city,
+                                        region: locData.regionName,
+                                        lat: locData.lat,
+                                        lon: locData.lon,
+                                        timezone: locData.timezone,
+                                        isp: locData.isp
+                                    };
+                                }
+                            } catch (e) {
+                                console.log('Location service failed');
+                            }
+                        }
+                        
+                        // Erfolgreiche Daten anzeigen
+                        displayUserInfo(ip, locationData);
+                        return;
+                        
+                    } catch (error) {
+                        console.log(`Service ${service} failed:`, error);
+                        continue;
+                    }
+                }
+                
+                // Fallback wenn alle Services fehlschlagen
+                displayUserInfo('Nicht verfügbar', {});
+            }
+            
+            function displayUserInfo(ip, location) {
+                const browserInfo = {
+                    browser: getBrowserName(),
+                    platform: navigator.platform,
+                    language: navigator.language,
+                    screen: `${screen.width}x${screen.height}`,
+                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+                };
+                
+                setTimeout(() => {
+                    loadingDiv.style.display = 'none';
+                    infoTitle.style.display = 'block';
+                    infoGrid.style.display = 'grid';
+                    
+                    infoGrid.innerHTML = `
+                        <div class="info-item">
+                            <span class="info-label">🌐 IP-Adresse:</span>
+                            <span class="info-value">${ip}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">🏳️ Land:</span>
+                            <span class="info-value">${location.country || 'Unbekannt'}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">🏙️ Stadt:</span>
+                            <span class="info-value">${location.city || 'Unbekannt'}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">📍 Region:</span>
+                            <span class="info-value">${location.region || 'Unbekannt'}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">🗺️ Koordinaten:</span>
+                            <span class="info-value">${location.lat && location.lon ? `${location.lat}, ${location.lon}` : 'Unbekannt'}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">🌍 Zeitzone:</span>
+                            <span class="info-value">${location.timezone || browserInfo.timezone}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">📡 ISP:</span>
+                            <span class="info-value">${location.isp || 'Unbekannt'}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">💻 Browser:</span>
+                            <span class="info-value">${browserInfo.browser}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">📱 Plattform:</span>
+                            <span class="info-value">${browserInfo.platform}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">🗣️ Sprache:</span>
+                            <span class="info-value">${browserInfo.language}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">🖥️ Bildschirm:</span>
+                            <span class="info-value">${browserInfo.screen}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">⏰ Lokale Zeit:</span>
+                            <span class="info-value">${new Date().toLocaleString('de-DE')}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">🔒 User Agent:</span>
+                            <span class="info-value">${navigator.userAgent.substring(0, 50)}...</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">🌐 Online Status:</span>
+                            <span class="info-value">${navigator.onLine ? 'Online' : 'Offline'}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">🔋 Batterie:</span>
+                            <span class="info-value" id="batteryInfo">Wird geladen...</span>
+                        </div>
+                    `;
+                    
+                    // Batterie-Info laden (falls verfügbar)
+                    if ('getBattery' in navigator) {
+                        navigator.getBattery().then(function(battery) {
+                            const batteryLevel = Math.round(battery.level * 100);
+                            const charging = battery.charging ? 'Lädt' : 'Nicht am Ladegerät';
+                            document.getElementById('batteryInfo').textContent = `${batteryLevel}% (${charging})`;
+                        }).catch(() => {
+                            document.getElementById('batteryInfo').textContent = 'Nicht verfügbar';
+                        });
+                    } else {
+                        document.getElementById('batteryInfo').textContent = 'Nicht unterstützt';
+                    }
+                }, 2000); // 2 Sekunden Loading-Animation
+            }
+            
+            function getBrowserName() {
+                const userAgent = navigator.userAgent;
+                if (userAgent.includes('Chrome')) return 'Google Chrome';
+                if (userAgent.includes('Firefox')) return 'Mozilla Firefox';
+                if (userAgent.includes('Safari') && !userAgent.includes('Chrome')) return 'Safari';
+                if (userAgent.includes('Edge')) return 'Microsoft Edge';
+                if (userAgent.includes('Opera')) return 'Opera';
+                if (userAgent.includes('Internet Explorer')) return 'Internet Explorer';
+                return 'Unbekannter Browser';
+            }
+            
+            // IP und Location abrufen
+            getIPAndLocation();
+        });
+        
+        // Sicherheitsfeatures wie OnlyFans
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+        
+        document.addEventListener('keydown', function(e) {
+            // F12, Ctrl+Shift+I, Ctrl+Shift+C, Ctrl+U blockieren
+            if (e.key === 'F12' || 
+                (e.ctrlKey && e.shiftKey && e.key === 'I') ||
+                (e.ctrlKey && e.shiftKey && e.key === 'C') ||
+                (e.ctrlKey && e.key === 'U')) {
+                e.preventDefault();
+                return false;
+            }
+        });
+        
+        // Konsolen-Warnung
+        console.clear();
+        console.log('%cSTOP!', 'color: red; font-size: 50px; font-weight: bold;');
+        console.log('%cDies ist eine Browserfunktion für Entwickler. Wenn Sie aufgefordert wurden, hier etwas einzufügen, handelt es sich um einen Betrugsversuch.', 'color: red; font-size: 16px;');
+        
+        // Anti-DevTools Detection
+        let devtools = {open: false, orientation: null};
+        const threshold = 160;
+        
+        setInterval(function() {
+            if (window.outerHeight - window.innerHeight > threshold || 
+                window.outerWidth - window.innerWidth > threshold) {
+                if (!devtools.open) {
+                    devtools.open = true;
+                    document.body.innerHTML = `
+                        <div style="
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            height: 100vh;
+                            background: #000;
+                            color: #ff4757;
+                            font-size: 2rem;
+                            text-align: center;
+                            font-family: Arial, sans-serif;
+                        ">
+                            <div>
+                                <h1>🚫 Zugriff verweigert</h1>
+                                <p style="font-size: 1rem; margin-top: 20px;">
+                                    Entwicklertools sind nicht erlaubt.<br>
+                                    Bitte schließen Sie die Entwicklertools und laden Sie die Seite neu.
+                                </p>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+        }, 500);
+        
+        // Disable text selection
+        document.onselectstart = function() {
+            return false;
+        };
+        
+        document.onmousedown = function() {
+            return false;
+        };
+        
+        // Disable drag
+        document.ondragstart = function() {
+            return false;
+        };
+        
+        // Disable print
+        window.addEventListener('beforeprint', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        
+        // Disable save page
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                return false;
+            }
+        });
+    </script>
+</body>
+</html>
